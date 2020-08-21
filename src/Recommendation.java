@@ -54,12 +54,7 @@ public class Recommendation {
             }
         }
 
-        recommendations.sort(new Comparator<Collection>() {
-            @Override
-            public int compare(Collection collection, Collection t1) {
-                return collection.compareTo(t1);
-            }
-        }.reversed());
+        recommendations.sort(((Comparator<Collection>) Collection::compareTo).reversed());
 
         List<String> topFiveRecommendations = recommendations.stream().map(rec -> rec.getName()).limit(5).collect(Collectors.toList());
 
