@@ -36,11 +36,21 @@ public class Recommendation {
         List<String> favTypes = getFavorites(typePref);
         List<String> favBrand = getFavorites(brandPref);
 
-        for (int i = 0; i < filteredContents.size(); i++) {
-            if(filteredContents.get(i).getType().equals(favTypes.get(iterate))){
-                if (filteredContents.get(i).getBrand().equals(favBrand.get(iterate))){
-                    recommendations.add(filteredContents.get(i).getName());
-                    iterate++;
+        List<Collection> filretedByTypeCnt = new ArrayList<Collection>();
+
+        for (int i = 0; i < favTypes.size(); i++) {
+            for (int j = 0; j < filteredContents.size(); j++) {
+                if(filteredContents.get(j).getType().equals(favTypes.get(i))){
+                    filretedByTypeCnt.add(filteredContents.get(j));
+                }
+            }
+        }
+
+
+        for (int i = 0; i < favBrand.size(); i++) {
+            for (int j = 0; j < filretedByTypeCnt.size(); j++) {
+                if(filretedByTypeCnt.get(j).getBrand().equals(favBrand.get(i))){
+                    recommendations.add(filteredContents.get(j).getName());
                 }
             }
         }
