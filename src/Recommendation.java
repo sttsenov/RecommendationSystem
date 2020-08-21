@@ -11,8 +11,7 @@ public class Recommendation {
      * @return list of five names that the system recommends
      */
     public static List<String> getRecommendations(List<Collection> contents, Map<String, String> typePref, Map<String, String> brandPref){
-        List<String> recommendations = new ArrayList<>();
-        int iterate  = 0;
+               List<Collection> recommendations = new ArrayList<>();
 
         List<String> allBrands = contents.stream().map(Collection::getBrand).distinct().collect(Collectors.toList());
         List<String> allTypes = contents.stream().map(Collection::getType).distinct().collect(Collectors.toList());
@@ -50,13 +49,19 @@ public class Recommendation {
         for (int i = 0; i < favBrand.size(); i++) {
             for (int j = 0; j < filretedByTypeCnt.size(); j++) {
                 if(filretedByTypeCnt.get(j).getBrand().equals(favBrand.get(i))){
-                    recommendations.add(filteredContents.get(j).getName());
+                    recommendations.add(filretedByTypeCnt.get(j));
                 }
             }
         }
 
-        Collections.sort(recommendations);
-        List<String> topFiveRecommendations = recommendations.stream().limit(5).collect(Collectors.toList());
+        recommendations.sort(new Comparator<Collection>() {
+            @Override
+            public int compare(Collection collection, Collection t1) {
+                return collection.compareTo(t1);
+            }
+        }.reversed());
+
+        List<String> topFiveRecommendations = recommendations.stream().map(rec -> rec.getName()).limit(5).collect(Collectors.toList());
 
         return topFiveRecommendations;
     }
